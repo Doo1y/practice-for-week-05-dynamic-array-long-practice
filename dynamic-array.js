@@ -1,44 +1,82 @@
 class DynamicArray {
 
-  constructor(defaultSize=4) {
+  constructor(defaultSize = 4) {
+    this.length = 0;
+    this.capacity = defaultSize;
+    this.data = new Array(this.capacity);
 
-    // Your code here
   }
 
   read(index) {
-
-    // Your code here
+    if (this.data[index]) {
+      return this.data[index];
+    }
   }
 
   push(val) {
-
-    // Your code here
+    if (val) {
+      this.length++;
+      this.data[this.length - 1] = val;
+    }
+    if (this.length > this.capacity) {
+      this.resize();
+    }
+    return this.data;
   }
-
 
   pop() {
-
-    // Your code here
-  }
-
-  shift() {
-
-    // Your code here
+    if (this.length >= 0) {
+      let popped = this.data[this.length - 1];
+      this.data[this.length - 1] = undefined;
+      this.length--;
+      return popped;
+    }
   }
 
   unshift(val) {
-
-    // Your code here
+    let unshifted = [val];
+    if (val) {
+      this.length++;
+      for (let i = 1; i <= this.length; i++) {
+        unshifted[i] = this.data[i - 1];
+      }
+    }
+    this.data = unshifted;
+    if (this.length > this.capacity) {
+      this.resize();
+    }
+    return unshifted;
   }
 
-  indexOf (val) {
-
-    // Your code here
+  shift() {
+    let firstEl = this.data[0];
+    this.length--;
+    if (this.length > 0) {
+      let unshifted = [];
+      for (let i = 1; i <= this.length; i++) {
+        unshifted[i - 1] = this.data[i];
+      }
+      this.data = unshifted;
+    } else this.data = [];
+    return firstEl;
   }
 
-  resize () {
+  indexOf(val) {
+    if (this.length > 0) {
+      for (let i = 0; i < this.length; i++) {
+        if (this.data[i] === val) return i;
+      }
+      return -1;
+    }
+  }
 
-    // Your code here
+  resize() {
+    this.capacity *= 2;
+    let data = new Array(this.capacity);
+    for (let i = 0; i < this.capacity; i++) {
+      data[i] = this.data[i];
+    }
+    this.data = data;
   }
 
 }
